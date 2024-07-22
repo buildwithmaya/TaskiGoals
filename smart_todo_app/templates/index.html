@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content= "width=device-width, initial-scale=1.0">
+	<title>Smart Todo List</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+	<div class="box-1">
+		<h1>TaskZen</h1>
+
+		<form action="/add" method="post">
+        	<div class="center">
+            	<label>Task to do</label>
+            	<input type="text" name="goal" placeholder="Enter errand...">
+            	<br>
+            	<button type="submit">Add errand</button>
+        	</div>
+    </form>
+	</div>
+    <hr>
+
+	{% for errand in errand_list %}
+	<div class="errand">
+		<p>{{errand.id }} | {{ errand.goal }}</p>
+		{% if errand.done == False %}
+    	<span>Not accomplished</span>
+    	{% else %}
+    	<span>Accomplished</span>
+    	{% endif %}
+		<div>
+			<a href="/update/{{ errand.id }}">Close</a>
+			<a href="/delete/{{ errand.id }}">Delete</a>
+		</div>
+	</div>
+    {% endfor %}
+</body>
+
+
+</html>
+
+

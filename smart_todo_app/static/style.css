@@ -1,0 +1,32 @@
+body{
+    background-color: peachpuff ;
+
+}
+
+h1{
+    color: aliceblue;
+    font-family: Arial;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 1.6em;
+
+
+}
+.center {
+    text-align: center;
+}
+
+input {
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+.box-1{
+    background-color: lightsalmon;
+}
+
+.errand {
+    border-bottom: 1px solid #d5d5ca;
+    padding: 8px;
+    border-radius:16px;
+}
