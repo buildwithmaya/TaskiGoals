@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Today</title>
+{% endblock %}
+
+{% block body %}
+
+        <main>
+            <div class="today">
+                <h1>Today</h1>
+                <p>Here are your tasks for today:</p>
+                 {% if view %}
+                    <ul class="todaylist">
+                        {% for todo in view %}
+                            <li>
+                                {{ todo[0] }} | {{ todo[1] }} | {{ todo[2] }} | {{ todo[3] }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No tasks for today yet.</p>
+                {% endif %}
+            </div>
+        </main>
+{% endblock %}
+

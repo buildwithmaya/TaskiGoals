@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Project: {{ project_name }}</title>
+{% endblock %}
+
+{% block body %}
+<main>
+    <div class="project-tasks">
+        <h1>Project: {{ project_name }}</h1>
+        {% if view %}
+            <ul>
+                {% for todo in view %}
+                    <li>
+                        {{ todo[0] }}  |  {{ todo[1] }} | {{ todo[2] }} | {{ todo[3] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tasks for this project yet.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Upcoming</title>
+{% endblock %}
+
+{% block body %}
+
+        <main>
+            <div class="upcoming">
+                <h1>Upcoming</h1>
+                <p>Here are all your upcoming projects:</p>
+                {% if view %}
+                    <ul class="upcominglist">
+                        {% for todo in view %}
+                            <li>
+                                {{ todo[0] }} | {{ todo[1] }} | {{ todo[2] }} | {{ todo[3] }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No upcoming tasks yet.</p>
+                {% endif %}
+            </div>
+
+        </main>
+{% endblock %}

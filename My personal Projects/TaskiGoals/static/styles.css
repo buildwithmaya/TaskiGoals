@@ -1,0 +1,367 @@
+*{
+    box-sizing: border-box;
+    
+}
+
+
+body{
+    background-color:#f0f4f8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+.sidebar{
+    width: 250px;
+    background-color: #042331;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+}
+.sidebar a{
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: center;
+}
+.sidebar a:hover{
+    background-color: #575757;
+}
+.sidebar h2{
+    color: #fff;
+    text-align: center;
+}
+.sidebar header{
+    text-align: center;
+    color: #fff;
+
+
+}
+
+.tasking{
+    background-color: #4f8cff;
+    width: 200px;
+    padding:10px;
+    position: relative;
+    top: 0px;
+    left: 10px;
+    transition: background 0.2s;
+
+}
+
+.tasking:hover {
+    background-color: #2563eb; 
+}
+.content{
+    color: #333;
+    background-color: skyblue;
+}
+
+main{
+    margin-left: 300px;
+    padding: 20px;
+}
+
+#addingtask{
+    display: none;
+    margin-top: 10px;
+    width: 300px;
+    padding: 10px;
+   
+    
+}
+#addtask{
+    background-color: cornflowerblue;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 900px;
+    height: 200px;
+   
+
+}
+
+
+.priority{
+    position: absolute;
+    top: 20;
+    left: 20px; ;
+    width: 80px;
+    border: 1px solid black;
+    border-radius: 15px;
+
+    
+}
+
+.status{
+    position: absolute;
+    top: 40;
+    left: 23%;
+    border: none;
+    width: 80px;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+    
+
+
+.options{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    gap: 10px;
+    position: absolute;
+    top: 200px;
+    left: 400px;
+    width: 20px;
+    
+}
+
+.input-wrapper {
+    position: relative;
+    width: 500px;
+}
+
+.input-wrapper input {
+    padding-right: 40px;
+}
+
+.input-wrapper button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.submit{
+    background-color: #14b8a6;;
+    width:150px;
+    padding: 0px;
+    height: 30px;
+
+}
+
+.submit:hover {
+    background-color: #16a34a;
+
+}
+.completed-list{
+    background-color: #f0f4f8;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    list-style: disc;
+   
+}
+
+.setdate{
+    width: 120px;
+    border: 1px solid black;
+    border-radius: 1px;
+}
+   
+#settingdate {
+  display: none;
+}
+
+
+.footer{
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    left: 80px;
+    top: 400px;
+}
+
+.task-list{
+    border-collapse: collapse;
+    box-shadow: 20px 20px 20px 5px;
+    color: #333;
+    background-color: white;
+    text-align: center;
+    
+}
+
+.task-head{
+    background-color: #8ab2fd;
+    padding: 0.75rem 2rem;
+    text-transform: capitalize;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    font-weight: 900;
+    text-align: center;
+}
+td{
+    padding: 1rem 2rem;
+}
+tr:nth-child(even) {
+    background-color: rgb(229, 240, 249)
+}
+
+.todaylist li{
+    list-style: none;
+    padding: 10px;
+}
+.todaylist li:hover{
+    background-color: #d1e7fd;
+}
+.todaylist :nth-child(even){
+    background-color: #c3ddf8;
+}
+
+.upcominglist li{
+    list-style: none;
+    list-style-type: square;
+    padding: 10px;
+    margin: 10px;
+    
+
+}
+.upcominglist li:hover{
+    background-color: #d1e7fd;
+}
+.upcominglist :nth-child(even){
+    background-color: #c3ddf8;
+}
+
+.completedhead{
+    text-align: center;
+
+}
+
+
+
+.input-wrapper {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 24px 32px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.input-wrapper form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.input-wrapper input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.input-wrapper button {
+    padding: 8px 18px;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+
+}
+.input-wrapper button:hover {
+    background: #357ab8;
+}
+
+.input-wrapper ul {
+    list-style: none;
+    padding: 0;
+}
+
+.input-wrapper li {
+    background: #fff;
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    font-size: 1em;
+}
+
+.project-tasks {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 28px 36px;
+    background: #f8fafc;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.project-tasks h1 {
+    font-size: 1.5em;
+    margin-bottom: 18px;
+    color: #2d3a4a;
+    text-align: center;
+}
+
+.project-tasks ul {
+    list-style: none;
+    padding: 0;
+}
+
+.project-tasks li {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 12px 16px;
+    border-radius: 7px;
+    border: 1px solid #e3e8ee;
+    font-size: 1em;
+    color: #333;
+}
+
+<style>
+        .main {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 32px 40px;
+            background: #f8fafc;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .mainmain {
+            text-align: center;
+            color: #2d3a4a;
+            margin-bottom: 24px;
+        }
+        .inbox-list {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .inbox-list th, .task-list td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+        .inbox-list th {
+            background: #e3e8ee;
+            color: #333;
+            font-weight: 600;
+        }
+        .inbox-list tr:nth-child(even) {
+            background: #f4f7fa;
+        }
+        .inbox-list tr:hover {
+            background: #eaf1fb;
+        }
+        p {
+            text-align: center;
+            color: #888;
+            margin-top: 30px;
+        }

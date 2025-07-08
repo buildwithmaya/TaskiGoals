@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>search</title>
+{% endblock %}
+
+{% block body %}
+
+        <main>
+            <div class="input-wrapper">
+                <form method="POST" action="{{ url_for('search') }}">
+                    <input type="text" name="keyword" placeholder="Search tasks...">
+                    <button type="submit">Search</button>
+                </form>
+
+                {% if results %}
+                    <ul>
+                        {% for todo in results %}
+                            <li>{{ todo[0] }} | {{ todo[1] }} | {{ todo[2] }} | {{ todo[3] }}</li>
+                        {% endfor %}
+                    </ul>
+                {% elif results is not none %}
+                    <p>No results found.</p>
+                {% endif %}
+                
+            </div>
+        </main>
+{% endblock %}

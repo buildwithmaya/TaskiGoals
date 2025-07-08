@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>TaskiGoals</title>
+{% endblock %}
+
+{% block body %}
+
+        <main class="main">
+
+
+         <button class="tasking" onclick="showTask()"> + Add Task</button>
+
+         <div id="addingtask">
+
+            <form action="{{ url_for('add') }}" method="POST">
+
+
+               <input type="text" id="addtask" name="title" placeholder="Add a task...">
+
+               <div class="options">
+
+                  <div id="setdate">
+                     <button  type="button" class="setdate" onclick="toggleCalendar()">Set Date</button>
+                     
+                           
+                           
+                     <input type="datetime-local" id="settingdate" name="date">
+                  </div>
+                  
+                  <div>
+                     <button class="priority"></button>
+                        <select name="priority" required>
+                           <option value="" disabled selected>Select priority</option>
+                           <option value="important">Important</option>
+                           <option value="somewhat_important">Somewhat Important</option>
+                           <option value="not_important">Not Important</option>
+                        </select>
+                     
+                  </div>
+                  <div>
+                     <button class="status"></button>
+                        <select name="status" required>
+                           <option value="" disabled selected>Select status</option>
+                           <option value="pending">Pending</option>
+                           <option value="in_progress">In Progress</option>
+                           <option value="completed">Completed</option>
+                        </select>
+                  
+                  </div>
+                  <div>
+                     <label for="project">Project:</label>
+                     <input type="text" id="project" name="project" placeholder="Project name">
+                  </div>
+                  <div>
+                     <button type="submit" class="submit">Add task</button>
+                  </div>
+
+               </div>
+
+            </form>
+               
+               
+         </div>
+
+         <div id="output" style="margin-top: 15px;"></div>
+
+         {% if view %}
+
+            <table class="task-list">
+               <thead class="task-head">
+                     <tr>
+                        <th>Title</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Project</th>
+                        
+                     </tr>
+               </thead>
+               <tbody>
+                     {% for todo in view %}
+                        <tr>
+                           <td>{{ todo[0] }}</td>
+                           <td>{{ todo[1] }}</td>
+                           <td>{{ todo[2] }}</td>
+                           <td>{{ todo[3] }}</td>
+                           <td>{{ todo[4] }}</td>
+                           
+                           
+                        </tr>
+                     {% endfor %}
+               </tbody>
+            </table>
+         {% else %}
+            <p>No tasks yet.</p>
+         {% endif %}
+   
+         
+        </main>
+
+        <script>
+            function showTask() {
+                  const taskId = document.getElementById("addingtask")
+                  if (taskId.style.display === "none" || taskId.style.display === "")
+                        taskId.style.display = "block";
+                     else
+                        taskId.style.display = "none";
+                 
+
+            }
+
+            function submitTask() {
+               const task = document.getElementById("taskInput").value;
+               const category = document.getElementById("taskCategory").value;
+           
+               document.getElementById("output").innerText = `Task: ${task} | Category: ${category}`;
+            }
+
+            function toggleCalendar() {
+               const calendarId= document.getElementById("settingdate");
+           
+               // Show calendar only if a value is selected (not blank)
+               if (calendarId.style.display === "none" || calendarId.style.display === "")
+                        calendarId.style.display = "block";
+                     else
+                        calendarId.style.display = "none";
+                 
+               
+             }
+
+        </script>
+
+       
+{% endblock %}

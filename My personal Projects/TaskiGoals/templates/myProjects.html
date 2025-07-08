@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>My Projects</title>
+{% endblock %}
+
+{% block body %}
+<main>
+    <div class="projects">
+        <h1>My Projects</h1>
+        <p>Here are all the projects:</p>
+        {% if projects %}
+            <ul class="projects-list">
+                {% for project in projects %}
+                    <li>
+                        <a href="{{ url_for('project', project_name=project) }}">{{ project }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No projects for you yet.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}
