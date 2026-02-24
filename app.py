@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for,session, flash
-from model import connectToDB, addTodo, getTodos,  deleteTodo, getAllProjects,getCompletedTodos, getTodayTodos, getUpcomingTodos, getProjectTodos, searchTodos,getInboxTodos, create_user_table
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from model import connectToDB, addTodo, getTodos, deleteTodo, getAllProjects, getCompletedTodos, getTodayTodos, getUpcomingTodos, getProjectTodos, searchTodos, getInboxTodos, create_user_table, completeTodo, updateTodo
 from functools import wraps
 import sqlite3
+import bcrypt
+import os
 
 create_user_table()
 
 app = Flask(__name__)
 
-app.secret_key = 'your_super_secret_key' 
+app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production') 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -16,10 +18,10 @@ def login():
         password = request.form['password']
         conn = sqlite3.connect('TaskiGoals.db')
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM User WHERE username=? AND password=?', (username, password))
+        cursor.execute('SELECT * FROM User WHERE username=?', (username,))
         user = cursor.fetchone()
         conn.close()
-        if user:
+        if user and bcrypt.checkpw(password.encode('utf-8'), user[2].encode('utf-8')):
             session['user_id'] = user[0]
             session['username'] = user[1]
             flash('Login successful!', 'success')
@@ -34,8 +36,6 @@ def logout():
     flash('Logged out.', 'info')
     return redirect(url_for('login'))
 
-from functools import wraps
-
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -49,10 +49,11 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         conn = sqlite3.connect('TaskiGoals.db')
         cursor = conn.cursor()
         try:
-            cursor.execute('INSERT INTO User (username, password) VALUES (?, ?)', (username, password))
+            cursor.execute('INSERT INTO User (username, password) VALUES (?, ?)', (username, hashed_password.decode('utf-8')))
             conn.commit()
             flash('Account created! Please log in.', 'success')
             return redirect(url_for('login'))
@@ -63,12 +64,14 @@ def register():
     return render_template('register.html')
 
 @app.route('/')
+@login_required
 def index():
     user_id = session['user_id']
     view = getTodos(user_id)
     return render_template('index.html', view=view)
 
 @app.route('/add', methods=['POST'])
+@login_required
 def add():
     title = request.form.get('title')
     priority = request.form.get('priority')
@@ -82,6 +85,7 @@ def add():
     return redirect(url_for('index'))   
 
 @app.route('/completed')
+@login_required
 def completed():
     user_id = session['user_id']
     view = getCompletedTodos(user_id)
@@ -90,18 +94,21 @@ def completed():
 
 
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
     user_id = session['user_id']
     deleteTodo(id, user_id)
     return redirect(url_for('index'))
 
 @app.route('/today') 
+@login_required
 def today():
     user_id = session['user_id']
     view = getTodayTodos(user_id)
     return render_template('today.html', view=view)
 
 @app.route('/upcoming') 
+@login_required
 def upcoming():
     user_id = session['user_id']
     view = getUpcomingTodos(user_id)
@@ -109,34 +116,61 @@ def upcoming():
    
 
 @app.route('/myProjects') 
+@login_required
 def myProjects():
-    projects = getAllProjects()
+    user_id = session['user_id']
+    projects = getAllProjects(user_id)
     return render_template('myProjects.html', projects=projects)
    
 @app.route('/myProjects/<project_name>')
+@login_required
 def project(project_name):
     user_id = session['user_id']
     view = getProjectTodos(user_id, project_name)
     return render_template('project.html', view=view, project_name=project_name)
 
 @app.route('/inbox') 
+@login_required
 def inbox():
     user_id = session['user_id']
     view = getInboxTodos(user_id)
     return render_template('inbox.html', view=view)
 
 @app.route('/search', methods=['GET', 'POST'])
+@login_required
 def search():
     results = []
     if request.method == 'POST':
         keyword = request.form.get('keyword', '')
         if keyword:
-            results = searchTodos(keyword)
+            user_id = session['user_id']
+            results = searchTodos(keyword, user_id)
     return render_template('search.html', results=results)
-from flask import session, flash
+
+@app.route('/complete/<int:id>')
+@login_required
+def complete(id):
+    user_id = session['user_id']
+    completeTodo(id, user_id)
+    return redirect(request.referrer or url_for('index'))
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    user_id = session['user_id']
+    if request.method == 'POST':
+        title = request.form.get('title')
+        priority = request.form.get('priority')
+        status = request.form.get('status')
+        date = request.form.get('date')
+        project = request.form.get('project')
+        
+        if title and priority and status and date:
+            updateTodo(id, user_id, title, priority, status, date, project)
+            flash('Task updated successfully!', 'success')
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
-    #connectToDB()
-   # addTodo("Test Task", "High", "Pending", "2025-06-10 10:00")
-    # app.run(debug=True)
+    app.run(debug=True)

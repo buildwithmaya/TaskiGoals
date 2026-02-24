@@ -34,6 +34,11 @@ TaskiGoals is a simple, user-friendly task and project management web applicatio
    ```bash
    pip install -r requirements.txt
    ```
+3. Set up environment variables (optional but recommended for production):
+   ```bash
+   cp .env.example .env
+   # Edit .env and set a strong SECRET_KEY
+   ```
 
 ### Running the App
 1. Start the Flask server:
@@ -71,8 +76,15 @@ TaskiGoals/
 - Register a new account or log in with existing credentials.
 - Add new tasks with title, priority, status, date, and project.
 - View tasks by different categories (today, upcoming, completed, inbox, projects).
+- Mark tasks as completed or edit existing tasks.
 - Delete tasks as needed.
-- Search for tasks using keywords.
+- Search for tasks using keywords (searches only your own tasks).
+
+## Security Features
+- Password hashing using bcrypt
+- User authentication required for all task operations
+- User data isolation (users can only access their own data)
+- Environment variable support for secret keys
 
 ## License
 This project is for educational purposes.

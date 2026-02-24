@@ -6,22 +6,21 @@ def connectToDB(reset=False):
     cursor = conn.cursor()
 
     if reset:
-    
         cursor.execute("DROP TABLE IF EXISTS Todo")
-    cursor.execute('''
-                CREATE TABLE IF NOT EXISTS Todo (
-                title TEXT NOT NULL,
-                priority TEXT NOT NULL,
-                status TEXT NOT NULL,
-                date TEXT NOT NULL,
-                project TEXT,
-                completed INTEGER NOT NULL DEFAULT 0,
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER
-            )
-''')
-                 
     
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Todo (
+            title TEXT NOT NULL,
+            priority TEXT NOT NULL,
+            status TEXT NOT NULL,
+            date TEXT NOT NULL,
+            project TEXT,
+            completed INTEGER NOT NULL DEFAULT 0,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER
+        )
+   """)
+                 
     conn.commit()
     print("Connected to database")
     conn.close()
@@ -53,15 +52,14 @@ def getTodos(user_id):
     print("Disconnected from database")
     return todos
 
-
+def completeTodo(id, user_id):
     conn = sqlite3.connect('TaskiGoals.db')
     cursor = conn.cursor()
     cursor.execute('''
-                   UPDATE Todo 
-                   SET completed = 1
-                   WHERE id = ?
-                   ''', (id,))
-    
+        UPDATE Todo 
+        SET completed = 1, status = 'completed'
+        WHERE id = ? AND user_id = ?
+    ''', (id, user_id))
     conn.commit()
     print("Todo completed")
     conn.close()
@@ -163,23 +161,29 @@ def getProjectTodos(user_id, project_name):
     conn.close()
     return todos
 
-def searchTodos(keyword):
+def searchTodos(keyword, user_id):
     conn = sqlite3.connect('TaskiGoals.db')
     cursor = conn.cursor()
     query = '''
         SELECT * FROM Todo
-        WHERE title LIKE ? OR priority LIKE ? OR status LIKE ?
+        WHERE user_id = ?
+        AND (title LIKE ? OR priority LIKE ? OR status LIKE ?)
     '''
     wildcard = f"%{keyword}%"
-    cursor.execute(query, (wildcard, wildcard, wildcard))
+    cursor.execute(query, (user_id, wildcard, wildcard, wildcard))
     results = cursor.fetchall()
     conn.close()
     return results
 
-def getAllProjects():
+def getAllProjects(user_id):
     conn = sqlite3.connect('TaskiGoals.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT DISTINCT project FROM Todo WHERE project IS NOT NULL AND project != ""')
+    cursor.execute('''
+        SELECT DISTINCT project FROM Todo 
+        WHERE user_id = ? 
+        AND project IS NOT NULL 
+        AND project != ""
+    ''', (user_id,))
     projects = [row[0] for row in cursor.fetchall()]
     conn.close()
     return projects
@@ -196,6 +200,19 @@ def create_user_table():
     ''')
     conn.commit()
     conn.close()
+
+def updateTodo(id, user_id, title, priority, status, date, project):
+    conn = sqlite3.connect('TaskiGoals.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE Todo 
+        SET title = ?, priority = ?, status = ?, date = ?, project = ?
+        WHERE id = ? AND user_id = ?
+    ''', (title, priority, status, date, project, id, user_id))
+    conn.commit()
+    print("Todo updated")
+    conn.close()
+    print("Disconnected from database")
 
 if __name__ == "__main__":
     # Use reset=True ONLY if you want to wipe all data and start fresh!
