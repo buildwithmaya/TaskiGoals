@@ -139,4 +139,4 @@ from flask import session, flash
 if __name__ == '__main__':
     #connectToDB()
    # addTodo("Test Task", "High", "Pending", "2025-06-10 10:00")
-    app.run(debug=True)
+    # app.run(debug=True)
